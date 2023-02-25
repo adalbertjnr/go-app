@@ -50,6 +50,20 @@ pipeline {
         }  
       }
     }
+    stage ('Sonarqube ') {
+      steps {
+        script {
+          scannerHome = tool 'qube';
+          withSonarQubeEnv('sonarqube') {
+            sh "${scannerHome}/bin/sonar-scanner -Dsonar.projectKey=fpgo-app \
+            -Dsonar.sources=. \
+            -Dsonar.host.url=${env.SONAR_HOST_URL} \
+            -Dsonar.login=${env.SONAR_AUTH_TOKEN}"  
+          }
+          slackSend (color: 'good', message: '[Teste relizado pelo sonarqube]', tokenCredentialId: 'slack-creds')
+        }
+      }
+    }    
     stage ("validate the deployment rm") {
       when {
         beforeInput true
@@ -69,22 +83,11 @@ pipeline {
         }
       }
     }
-    stage ('Sonarqube ') {
-      steps {
-        script {
-          scannerHome = tool 'qube';
-          withSonarQubeEnv('sonarqube') {
-            sh "${scannerHome}/bin/sonar-scanner"   
-          }
-        }
-      }
-    }
   }
   post {
     always {
-        sh 'echo "Testing if the hosts are ok"'
+        sh 'echo "Testing if lb endp are ok"'
         ansiblePlaybook(credentialsId: 'jenkins', inventory: 'hosts', playbook: 'playbooks/playbook.yaml')
       }
     }
   }
-
