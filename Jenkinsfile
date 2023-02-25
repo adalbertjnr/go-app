@@ -69,6 +69,16 @@ pipeline {
         }
       }
     }
+    stage ('Sonarqube ') {
+      steps {
+        script {
+          scannerHome = tool 'qube';
+          withSonarQubeEnv('sonarqube') {
+            sh "${scannerHome}/bin/sonar-scanner"   
+          }
+        }
+      }
+    }
   }
   post {
     always {
