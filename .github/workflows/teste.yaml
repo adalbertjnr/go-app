@@ -69,6 +69,7 @@ jobs:
           else
             echo "docker compose down"
             echo "docker compose up"
+          fi
 
       - name: Cleaning docker images
         run: |
