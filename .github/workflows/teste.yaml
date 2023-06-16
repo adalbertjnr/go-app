@@ -24,8 +24,8 @@ jobs:
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v1
         env:
-          ECR_REGISTRY: 490360410258.dkr.ecr.sa-east-1.amazonaws.com
-          IMAGE_NAME: teste-app
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          ECR_REPOSITORY: teste-app
       - name: Build and push Docker image
         run: |
           TAG=$(git rev-parse --short "$GITHUB_SHA")
