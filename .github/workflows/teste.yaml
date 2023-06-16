@@ -62,12 +62,15 @@ jobs:
       - name: Checking container status and deploy the app
         run: |
           if [ -z $(docker ps -q) ]; then
+            echo $IMAGE_TAG
             sed -i "s,image:.*,image: $IMAGE_TAG," README.md
             echo "docker compose up -d"
           else
+            echo $IMAGE_TAG
             echo "docker compose down"
             sed -i "s,image:.*,image: $IMAGE_TAG," README.md
             echo "docker compose up -d"
+            cat README.md
           fi
             cat README.md
       - name: Cleaning docker images
@@ -79,7 +82,4 @@ jobs:
           rm file.txt
           cat README.md
           git add . && git commit -m "Updated image tag to $IMAGE_TAG"
-          echo "test"
-          git log --patch
-          echo "test"
           git push https://${{ secrets.TOKEN }}@github.com/souzagmu/go-app.git HEAD:teste
