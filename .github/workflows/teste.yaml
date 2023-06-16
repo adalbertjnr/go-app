@@ -76,10 +76,7 @@ jobs:
 
       - name: Pushing changes to repo
         run: |
-          cat file.txt
           rm file.txt
-          git config --global user.email ${{ github.event.pusher.email }}
-          git config --global user.name ${{ github.event.pusher.name }}
           git add .
           git commit -m "Updated image tag"
           git log --patch
