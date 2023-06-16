@@ -42,7 +42,6 @@ jobs:
       - name: Upload wrote docker compose tag
         uses: actions/upload-artifact@v3.1.2
         with:
-          name: file
           path: file.txt
 
   deploy_compose:
@@ -53,8 +52,8 @@ jobs:
       - name: Receiving image tag value
         uses: actions/download-artifact@v2.1.1
         with:
-          name: file
-          path: file.txt
+          name: artifact
+          path: main
 
       - name: Checkout code
         uses: actions/checkout@v2
