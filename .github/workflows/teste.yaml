@@ -63,11 +63,11 @@ jobs:
         run: |
           if [ -z $(docker ps -q) ]; then
             sed -i "s,image:.*,image: $IMAGE_TAG," README.md
-            echo "docker compose up"
+            echo "docker compose up -d"
           else
             echo "docker compose down"
             sed -i "s,image:.*,image: $IMAGE_TAG," README.md
-            echo "docker compose up"
+            echo "docker compose up -d"
           fi
 
       - name: Cleaning docker images
@@ -76,8 +76,11 @@ jobs:
 
       - name: Pushing changes to repo
         run: |
+          cat file.txt
           rm file.txt
           git config --global user.email ${{ github.event.pusher.email }}
           git config --global user.name ${{ github.event.pusher.name }}
-          git add . && git commit -m "Updated image tag to $IMAGE_TAG"
+          git add .
+          git commit -m "Updated image tag to $IMAGE_TAG"
+          git log --patch
           git push origin teste
