@@ -49,6 +49,9 @@ jobs:
     runs-on: self-hosted
 
     steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
       - name: Receiving image tag value
         uses: actions/download-artifact@v2.1.1
         with:
@@ -82,6 +85,5 @@ jobs:
         run: |
           rm file.txt
           cat README.md
-          git pull origin teste
           git add . && git commit -m "Updated image tag to $IMAGE_TAG"
           git push https://${{ secrets.TOKEN }}@github.com/souzagmu/go-app.git HEAD:teste
