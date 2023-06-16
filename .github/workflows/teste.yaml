@@ -37,29 +37,30 @@ jobs:
         run: |
           docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
-          echo $IMAGE_TAG
+          echo $IMAGE_TAG > file
 
-      # - name: Upload wrote docker compose tag
-      #   uses: actions/upload-artifact@v3.1.2
-      #   with:
-      #     name: README.md
-      #     path: main
+      - name: Upload wrote docker compose tag
+        uses: actions/upload-artifact@v3.1.2
+        with:
+          name: file
+          path: main
 
   deploy_compose:
     needs: build-and-push
     runs-on: self-hosted
 
     steps:
-      # - name: download the artifact from go.yml
-      #   uses: actions/download-artifact@v2.1.1
-      #   with:
-      #     name: README.md
+      - name: download the artifact from go.yml
+        uses: actions/download-artifact@v2.1.1
+        with:
+          name: file
 
       - name: Checkout code
         uses: actions/checkout@v2
 
       - name: Replacing image tag
         run: |
+          IMAGE_TAG=$(cat file)
           echo $IMAGE_TAG
           sed -i "s,image:.*,image: $IMAGE_TAG," README.md
           cat README.md
