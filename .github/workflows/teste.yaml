@@ -20,6 +20,7 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: sa-east-1
 
+      - name: Configure image tag
         run: |
           TAG=$(git rev-parse --short "$GITHUB_SHA")
           IMAGE_TAG="${{ github.run_number }}-${TAG}"
