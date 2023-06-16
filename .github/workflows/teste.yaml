@@ -24,7 +24,7 @@ jobs:
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v1
         env:
-          ECR_REGISTRY: 490360410258.dkr.ecr.sa-east-1.amazonaws.com/
+          ECR_REGISTRY: 490360410258.dkr.ecr.sa-east-1.amazonaws.com
           IMAGE_NAME: teste-app
       - name: Build and push Docker image
         run: |
