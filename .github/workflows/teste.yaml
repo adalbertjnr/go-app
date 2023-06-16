@@ -54,20 +54,19 @@ jobs:
         with:
           name: artifact
 
-      - name: Replacing image tag
+      - name: Assigning image as env var
         run: |
-          cat file.txt
           IMAGE_TAG=$(cat file.txt)
           echo $IMAGE_TAG
-          sed -i "s,image:.*,image: $IMAGE_TAG," README.md
-          cat README.md
 
       - name: Checking container status and deploy the app
         run: |
           if [ -z $(docker ps -q) ]; then
+            sed -i "s,image:.*,image: $IMAGE_TAG," README.md
             echo "docker compose up"
           else
             echo "docker compose down"
+            sed -i "s,image:.*,image: $IMAGE_TAG," README.md
             echo "docker compose up"
           fi
 
