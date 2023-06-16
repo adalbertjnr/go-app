@@ -35,8 +35,6 @@ jobs:
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
           ECR_REPOSITORY: teste-app
         run: |
-          pwd
-          ls
           docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
           echo $IMAGE_TAG > file.txt
@@ -52,11 +50,6 @@ jobs:
     runs-on: self-hosted
 
     steps:
-      - name: Checking dir
-        run: |
-          pwd
-          ls
-
       - name: Receiving image tag value
         uses: actions/download-artifact@v2.1.1
         with:
@@ -68,7 +61,8 @@ jobs:
 
       - name: Replacing image tag
         run: |
-          IMAGE_TAG=$(cat file)
+          cat file.txt
+          IMAGE_TAG=$(cat file.txt)
           echo $IMAGE_TAG
           sed -i "s,image:.*,image: $IMAGE_TAG," README.md
           cat README.md
