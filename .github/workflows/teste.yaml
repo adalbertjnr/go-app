@@ -58,7 +58,7 @@ jobs:
         run: |
           IMAGE_TAG=$(cat file.txt)
           echo $IMAGE_TAG
-          C="sed -i "s,image:.*,image: $IMAGE_TAG," README.md"
+          C="sed -i \"s,image:.*,image: $IMAGE_TAG,\" README.md"
 
       - name: Checking container status and deploy the app
         run: |
