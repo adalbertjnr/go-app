@@ -58,12 +58,12 @@ jobs:
           name: artifact
 
       - name: Assigning image as env var
+        id: assign-tag
         run: |
           echo "::set-output name=IMAGE_TAG::$(cat file.txt)"
           echo $IMAGE_TAG
 
       - name: Checking container status and deploy the app
-        id: assign-tag
         run: |
           if [ -z $(docker ps -q) ]; then
              sed -i "s,image:.*,image: ${{ steps.assign-tag.outputs.IMAGE_TAG }}," README.md
