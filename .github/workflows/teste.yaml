@@ -69,12 +69,12 @@ jobs:
           echo "$IMAGE_TAG"
           if [ -z $(docker ps -q) ]; then
             echo ${IMAGE_TAG}
-            sed -i "s,image:.*,image: ${IMAGE_TAG}," README.md
+            sed -i "s,image:.*,image: $TAG," README.md
             echo "docker compose up -d"
           else
             echo ${{ env.IMAGE_TAG }}
             echo "docker compose down"
-            sed -i "s,image:.*,image: $IMAGE_TAG," README.md
+            sed -i "s,image:.*,image: $TAG," README.md
             echo "docker compose up -d"
             cat README.md
           fi
