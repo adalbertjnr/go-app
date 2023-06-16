@@ -82,5 +82,6 @@ jobs:
         run: |
           rm file.txt
           cat README.md
+          git pull origin teste
           git add . && git commit -m "Updated image tag to $IMAGE_TAG"
           git push https://${{ secrets.TOKEN }}@github.com/souzagmu/go-app.git HEAD:teste
