@@ -66,9 +66,7 @@ jobs:
         env:
           TAG: $IMAGE_TAG
         run: |
-          echo "$IMAGE_TAG"
           if [ -z $(docker ps -q) ]; then
-            echo ${IMAGE_TAG}
             sed -i "s,image:.*,image: $TAG," README.md
             echo "docker compose up -d"
           else
@@ -76,9 +74,7 @@ jobs:
             echo "docker compose down"
             sed -i "s,image:.*,image: $TAG," README.md
             echo "docker compose up -d"
-            cat README.md
           fi
-            cat README.md
       - name: Cleaning docker images
         run: |
           echo "docker images -q | xargs docker rmi -f || echo "Not possible to remove images""
@@ -87,5 +83,7 @@ jobs:
         run: |
           rm file.txt
           cat README.md
+          git config --global user.email 
+          git config --global user.name 
           git add . && git commit -m "Updated image tag to $IMAGE_TAG"
-          git push https://${{ secrets.TOKEN }}@github.com/souzagmu/go-app.git HEAD:teste
+          git push origin teste
