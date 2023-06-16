@@ -77,7 +77,9 @@ jobs:
       - name: Pushing changes to repo
         run: |
           rm file.txt
-          git add .
-          git commit -m "Updated image tag"
+          cat README.md
+          git add . && git commit -m "Updated image tag to $IMAGE_TAG"
+          echo "test"
           git log --patch
+          echo "test"
           git push https://${{ secrets.TOKEN }}@github.com/souzagmu/go-app.git HEAD:teste
