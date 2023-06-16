@@ -59,20 +59,19 @@ jobs:
 
       - name: Assigning image as env var
         run: |
-          export IMAGE_TAG=$(cat file.txt)
+          echo "::set-output name=IMAGE_TAG::$(cat file.txt)"
           echo $IMAGE_TAG
 
       - name: Checking container status and deploy the app
-        env:
-          TAG: $IMAGE_TAG
+        id: assign-tag
         run: |
           if [ -z $(docker ps -q) ]; then
-            sed -i "s,image:.*,image: ${{ env.TAG }}," README.md
+             sed -i "s,image:.*,image: ${{ steps.assign-tag.outputs.IMAGE_TAG }}," README.md
             echo "docker compose up -d"
           else
             echo ${{ env.IMAGE_TAG }}
             echo "docker compose down"
-            sed -i "s,image:.*,image: ${{ env.TAG }}," README.md
+             sed -i "s,image:.*,image: ${{ steps.assign-tag.outputs.IMAGE_TAG }}," README.md
             echo "docker compose up -d"
           fi
       - name: Cleaning docker images
