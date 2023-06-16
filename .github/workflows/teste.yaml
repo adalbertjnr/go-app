@@ -54,14 +54,6 @@ jobs:
         with:
           name: artifact
 
-      - name: Receiving image tag value
-        run: |
-          ls
-          ls -R
-
-      - name: Checkout code
-        uses: actions/checkout@v2
-
       - name: Replacing image tag
         run: |
           pwd
