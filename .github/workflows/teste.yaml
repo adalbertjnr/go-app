@@ -42,15 +42,14 @@ jobs:
       - name: Upload wrote docker compose tag
         uses: actions/upload-artifact@v3.1.2
         with:
-          name: file
-          path: main
+          path: file
 
   deploy_compose:
     needs: build-and-push
     runs-on: self-hosted
 
     steps:
-      - name: download the artifact from go.yml
+      - name: Receiving image tag value
         uses: actions/download-artifact@v2.1.1
         with:
           name: file
