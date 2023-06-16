@@ -35,25 +35,33 @@ jobs:
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
           ECR_REPOSITORY: teste-app
         run: |
+          pwd
+          ls
           docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
-          echo $IMAGE_TAG > file
+          echo $IMAGE_TAG > file.txt
 
       - name: Upload wrote docker compose tag
         uses: actions/upload-artifact@v3.1.2
         with:
-          path: file
+          name: file
+          path: file.txt
 
   deploy_compose:
     needs: build-and-push
     runs-on: self-hosted
 
     steps:
+      - name: Checking dir
+        run: |
+          pwd
+          ls
+
       - name: Receiving image tag value
         uses: actions/download-artifact@v2.1.1
         with:
           name: file
-          path: file
+          path: file.txt
 
       - name: Checkout code
         uses: actions/checkout@v2
