@@ -37,6 +37,7 @@ jobs:
         run: |
           docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+          echo $IMAGE_TAG
 
       # - name: Upload wrote docker compose tag
       #   uses: actions/upload-artifact@v3.1.2
@@ -59,6 +60,7 @@ jobs:
 
       - name: Replacing image tag
         run: |
+          echo $IMAGE_TAG
           sed -i "s,image:.*,image: $IMAGE_TAG," README.md
           cat README.md
 
