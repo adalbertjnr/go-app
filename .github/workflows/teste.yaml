@@ -53,6 +53,7 @@ jobs:
         uses: actions/download-artifact@v2.1.1
         with:
           name: file
+          path: file
 
       - name: Checkout code
         uses: actions/checkout@v2
