@@ -62,6 +62,7 @@ jobs:
       - name: Replacing image tag
         run: |
           pwd
+          ls
           cat file.txt
           IMAGE_TAG=$(cat file.txt)
           echo $IMAGE_TAG
