@@ -56,8 +56,6 @@ jobs:
 
       - name: Replacing image tag
         run: |
-          pwd
-          ls
           cat file.txt
           IMAGE_TAG=$(cat file.txt)
           echo $IMAGE_TAG
@@ -66,5 +64,20 @@ jobs:
 
       - name: Checking container status and deploy the app
         run: |
-          echo "Ok"
-          cat README.md
+          if [ -z $(docker ps -q) ]; then
+            echo "docker compose up"
+          else
+            echo "docker compose down"
+            echo "docker compose up"
+
+      - name: Cleaning docker images
+        run: |
+          echo "docker images -q | xargs docker rmi -f || echo "Not possible to remove images""
+
+      - name: Pushing changes to repo
+        run: |
+          rm file.txt
+          git config --global user.email ${{ github.event.pusher.email }}
+          git config --global user.name ${{ github.event.pusher.name }}
+          git add . && git commit -m "Updated image tag to $IMAGE_TAG"
+          git push origin teste
