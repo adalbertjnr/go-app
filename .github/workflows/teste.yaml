@@ -60,10 +60,8 @@ jobs:
           echo $IMAGE_TAG
 
       - name: Checking container status and deploy the app
-        env:
-          IMAGE_TAG: $IMAGE_TAG
         run: |
-          echo $IMAGE_TAG
+          echo "$IMAGE_TAG"
           if [ -z $(docker ps -q) ]; then
             echo ${IMAGE_TAG}
             sed -i "s,image:.*,image: ${IMAGE_TAG}," README.md
