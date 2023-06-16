@@ -63,6 +63,8 @@ jobs:
           echo $IMAGE_TAG
 
       - name: Checking container status and deploy the app
+        env:
+          TAG: $IMAGE_TAG
         run: |
           echo "$IMAGE_TAG"
           if [ -z $(docker ps -q) ]; then
