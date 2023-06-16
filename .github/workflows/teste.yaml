@@ -5,11 +5,6 @@ on:
     branches:
       - teste
 
-env:
-  ECR_REGISTRY: 490360410258.dkr.ecr.sa-east-1.amazonaws.com/
-  IMAGE_NAME: teste-app
-  TAG: TAG
-
 jobs:
   build-and-push:
     runs-on: ubuntu-latest
@@ -28,13 +23,18 @@ jobs:
       - name: Login to Amazon ECR
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v1
-
+        env:
+          ECR_REGISTRY: 490360410258.dkr.ecr.sa-east-1.amazonaws.com/
+          IMAGE_NAME: teste-app
       - name: Build and push Docker image
         run: |
-          docker build -t $ECR_REGISTRY/$IMAGE_NAME:${{ env.TAG }} .
-          docker push $ECR_REGISTRY/$IMAGE_NAME:${{ env.TAG }}
+          TAG=$(git rev-parse --short "$GITHUB_SHA")
+          docker build -t $ECR_REGISTRY/$IMAGE_NAME:{{ .github_run_number }}-${{ env.TAG }} .
+          docker push $ECR_REGISTRY/$IMAGE_NAME:{{ .github_run_number }}-${{ env.TAG }}
+          sed -i "s,image:.*,image:\ ${{ github.sha }}," README.md
 
   # deploy_compose:
   #   runs-on: self-hosted
 
   #   steps:
+  #     - name:
