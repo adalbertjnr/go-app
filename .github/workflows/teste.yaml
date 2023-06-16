@@ -69,7 +69,7 @@ jobs:
             sed -i "s,image:.*,image: $IMAGE_TAG," README.md
             echo "docker compose up -d"
           fi
-
+            cat README.md
       - name: Cleaning docker images
         run: |
           echo "docker images -q | xargs docker rmi -f || echo "Not possible to remove images""
