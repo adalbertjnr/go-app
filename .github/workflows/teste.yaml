@@ -61,6 +61,7 @@ jobs:
 
       - name: Checking container status and deploy the app
         run: |
+          cat README.md
           if [ -z $(docker ps -q) ]; then
             echo $IMAGE_TAG
             sed -i "s,image:.*,image: $IMAGE_TAG," README.md
