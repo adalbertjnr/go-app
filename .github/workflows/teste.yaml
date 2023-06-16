@@ -35,8 +35,24 @@ jobs:
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
           sed -i "s,image:.*,image: ${{ github.sha }}," README.md
 
-  # deploy_compose:
-  #   runs-on: self-hosted
+      # - name: Upload wrote docker compose tag
+      #   uses: actions/upload-artifact@v3.1.2
+      #   with:
+      #     name: README.md
+      #     path: main
 
-  #   steps:
-  #     - name:
+  deploy_compose:
+    needs: build-and-push
+    runs-on: self-hosted
+
+    steps:
+      # - name: download the artifact from go.yml
+      #   uses: actions/download-artifact@v2.1.1
+      #   with:
+      #     name: README.md
+
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Build and push Docker images
+        run: cat README.md
