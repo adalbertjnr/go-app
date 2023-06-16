@@ -20,6 +20,11 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: sa-east-1
 
+        run: |
+          TAG=$(git rev-parse --short "$GITHUB_SHA")
+          IMAGE_TAG="${{ github.run_number }}-${TAG}"
+          echo "IMAGE_TAG=$IMAGE_TAG" >> $GITHUB_ENV
+
       - name: Login to Amazon ECR
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v1
@@ -29,11 +34,8 @@ jobs:
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
           ECR_REPOSITORY: teste-app
         run: |
-          TAG=$(git rev-parse --short "$GITHUB_SHA")
-          IMAGE_TAG="${{ github.run_number }}-${TAG}"
           docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
-          sed -i "s,image:.*,image: ${{ github.sha }}," README.md
 
       # - name: Upload wrote docker compose tag
       #   uses: actions/upload-artifact@v3.1.2
@@ -54,5 +56,12 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Build and push Docker images
-        run: cat README.md
+      - name: Replacing image tag
+        run: |
+          sed -i "s,image:.*,image: $IMAGE_TAG," README.md
+          cat README.md
+
+      - name: Checking container status and deploy the app
+        run: |
+          echo "Ok"
+          cat README.md
